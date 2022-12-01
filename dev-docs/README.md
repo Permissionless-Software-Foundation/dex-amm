@@ -1,10 +1,9 @@
 # Developer Documentation
 
-This directory needs to be fleshed out with more information. The markdown files in this directory are intended to provide additional documentation for software developers that use this boilerplate to run their own forks.
+This directory contains documentation for JavaScript developers. The documentation in this directory covers the technical architecture of the app.
 
-## Startup
-This software requires an IPFS node in order to operate the JSON RPC and ipfs-coord features. There are two ways to incorporate an IPFS node:
+This AMM app is an add-on for the [PSF DEX](https://dex.fullstack.cash). It is assumed that the reader is familiar with the [DEX developer documentation](https://github.com/Permissionless-Software-Foundation/bch-dex/tree/master/dev-docs).
 
-- js-ipfs is integrated into this repository. If you simply run `npm start`, then this app will default to the js-ipfs IPFS node. However, js-ipfs is not as full featured as go-ipfs. It has memory leaks and lags considerably behind go-ipfs in terms of features.
 
-- go-ipfs is the preferred way to run a node. It can be run externally by following the guidence on the [IPFS homepage](https://ipfs.io). Once the IPFS node is running, this app can take control of it. Use the [local-external-ipfs-node.sh](../shell-scripts/local-external-ipfs-node.sh) shell script to start this app and attach it to the go-ipfs node.
+- [Use Cases](./use-cases.md)
+- [Specification](./specification.md)

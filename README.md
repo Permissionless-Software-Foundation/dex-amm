@@ -6,6 +6,9 @@
 
 This is an automated market maker (AMM) for the [PSF DEX](https://dex.fullstack.cash). Operators can specify the tokens they want to sell, the quanities they want to sell, and the prices they want to sell at, in a JSON file. This app then reads that JSON file and maintains inventory on the DEX.
 
+## Documentation
+This app is currently under active development. For developers who want to follow progress or contribute, start by reading the [Developer Documentation](./dev-docs)
+
 ## Requirements
 
 - node **^14.18.2**
