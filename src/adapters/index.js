@@ -20,6 +20,7 @@ import JSONFiles from './json-files.js'
 
 import FullStackJWT from './fullstack-jwt.js'
 import config from '../../config/index.js'
+import DexAdapter from './dex.js'
 
 class Adapters {
   constructor (localConfig = {}) {
@@ -32,6 +33,7 @@ class Adapters {
     this.jsonFiles = new JSONFiles()
     this.bchjs = new BCHJS()
     this.config = config
+    this.dex = new DexAdapter()
 
     // Get a valid JWT API key and instance bch-js.
     this.fullStackJwt = new FullStackJWT(config)

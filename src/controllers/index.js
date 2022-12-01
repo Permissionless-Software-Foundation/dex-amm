@@ -20,10 +20,14 @@ import UseCases from '../use-cases/index.js'
 // Load the REST API Controllers.
 import RESTControllers from './rest-api/index.js'
 
+import TimerControllers from './timer-controllers.js'
+
 class Controllers {
   constructor (localConfig = {}) {
     this.adapters = new Adapters()
     this.useCases = new UseCases({ adapters: this.adapters })
+
+    this.timerControllers = new TimerControllers({ adapters: this.adapters, useCases: this.useCases })
   }
 
   // Spin up any adapter libraries that have async startup needs.
