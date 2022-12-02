@@ -66,4 +66,14 @@ const localdb = {
   }
 }
 
-export default { ipfs, localdb };
+const dex = {
+  createOrder: async () => {},
+  getOrders: async () => {},
+  deleteOrder: async () => {}
+}
+
+const jsonFiles = {
+  readJSON: async () => {}
+}
+
+export default { ipfs, localdb, dex, jsonFiles };

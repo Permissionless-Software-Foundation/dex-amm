@@ -20,6 +20,11 @@ class OrderUseCases {
 
   // Check each order maintained by the DEX and bring them into alignment with
   // the JSON file of desired orders to maintain.
+  // It's important that this function is called less frequently than it takes
+  // to generate a new order, so that multiple calls don't step on top of one
+  // another.
+  // This function is also designed to exit after creating a single order. It's
+  // intentially slow to create new orders.
   async checkOrders () {
     try {
       // Read the order list from the JSON file.
@@ -33,7 +38,7 @@ class OrderUseCases {
       const usdPerBch = await this.wallet.getUsd()
       console.log('usdPerBch: ', usdPerBch)
 
-      const bchjs = this.wallet.bchjs
+      let hash = ''
 
       // Loop through the ideal Orders and try to find an existing Order that matches.
       for (let i = 0; i < idealOrders.length; i++) {
@@ -55,11 +60,7 @@ class OrderUseCases {
           }
         }
 
-        // Calculate the ideal price per token in sats.
-        const idealBchPrice = bchjs.Util.floor8(thisIdealOrder.qty * thisIdealOrder.pricePerToken / usdPerBch)
-        console.log('idealBchPrice: ', idealBchPrice)
-        const idealSatPrice = bchjs.BitcoinCash.toSatoshi(idealBchPrice)
-        console.log('idealSatPrice: ', idealSatPrice)
+        const idealSatPrice = this.convertUsdToSats(usdPerBch, thisIdealOrder)
 
         // Measure the tolerance thresholds.
         const highThresh = idealSatPrice * (1 + thisIdealOrder.errorPercent)
@@ -84,41 +85,47 @@ class OrderUseCases {
             // Create a new Order
             console.log('Creating a new Order.')
             thisIdealOrder.idealSatPrice = idealSatPrice
-            await this.createOrder(thisIdealOrder)
+            hash = await this.createOrder(thisIdealOrder)
 
             break
           }
-          console.log('Existing Order within price tolerance.')
+          // console.log('Existing Order within price tolerance.')
         } else {
           console.log('Creating a new Order.')
 
           // Match not found, create a new order.
           thisIdealOrder.idealSatPrice = idealSatPrice
-          await this.createOrder(thisIdealOrder)
+          hash = await this.createOrder(thisIdealOrder)
 
           break
         }
       }
 
-      // if (existingOrders.length < idealOrders.length) {
-      //   // Get the USD/BCH price.
-      //   const usdPerBch = await this.wallet.getUsd()
-      //   console.log('usdPerBch: ', usdPerBch)
-      //
-      //   const bchjs = this.wallet.bchjs
-      //
-      //   // Calculate the ideal price per token in sats.
-      //   const idealBchPricePerToken = bchjs.Util.floor8(idealOrders[0].pricePerToken / usdPerBch)
-      //   console.log('idealBchPricePerToken: ', idealBchPricePerToken)
-      //   const idealSatPricePerToken = bchjs.BitcoinCash.toSatoshi(idealBchPricePerToken)
-      //   console.log('idealSatPricePerToken: ', idealSatPricePerToken)
-      //
-      //   idealOrders[0].idealSatPricePerToken = idealSatPricePerToken
-      //
-      //   await this.createOrder(idealOrders[0])
-      // }
+      return hash
     } catch (err) {
       console.error('Error in use-cases/order/checkOrders()')
+      throw err
+    }
+  }
+
+  // This function takes in a USD dollar amount and returns the same value
+  // calculated at satoshis.
+  // The behind this function is that is can be swapped out with more sophisticated
+  // functions if more sophisticated dollar calculations are required.
+  convertUsdToSats (usdPerBch, idealOrder) {
+    try {
+      const bchjs = this.wallet.bchjs
+
+      // Calculate the ideal price per token in sats.
+      const idealBchPrice = bchjs.Util.floor8(idealOrder.qty * idealOrder.pricePerToken / usdPerBch)
+      console.log('idealBchPrice: ', idealBchPrice)
+
+      const idealSatPrice = bchjs.BitcoinCash.toSatoshi(idealBchPrice)
+      console.log('idealSatPrice: ', idealSatPrice)
+
+      return idealSatPrice
+    } catch (err) {
+      console.error('Error in convertUsdToSats()')
       throw err
     }
   }
@@ -127,19 +134,6 @@ class OrderUseCases {
   async createOrder (orderDetails) {
     try {
       console.log('orderDetails: ', orderDetails)
-
-      /*
-      {
-        lokadId: 'SWP',
-        messageType: 1,
-        messageClass: 1,
-        tokenId: 'a4fb5c2da1aa064e25018a43f9165040071d9e984ba190c222a7f59053af84b2',
-        buyOrSell: 'sell',
-        rateInBaseUnit: 9067,
-        minUnitsToExchange: 9067,
-        numTokens: 1
-      }
-      */
 
       const orderObj = {
         lokadId: 'SWP',
@@ -153,7 +147,9 @@ class OrderUseCases {
       }
 
       const result = await this.adapters.dex.createOrder(orderObj)
-      console.log('use-cases/order/createOrder() result: ', result)
+      // console.log('use-cases/order/createOrder() result: ', result)
+
+      return result.hash
     } catch (err) {
       console.error('Error in use-cases/order/createOrder()')
       throw err

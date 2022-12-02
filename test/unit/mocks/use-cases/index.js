@@ -34,9 +34,16 @@ class UserUseCaseMock {
 class UseCasesMock {
   constuctor(localConfig = {}) {
     // this.user = new UserUseCaseMock(localConfig)
+    // this.order = {
+    //   checkOrders: async () => {}
+    // }
   }
 
   user = new UserUseCaseMock()
+
+  order = {
+    checkOrders: async () => {}
+  }
 }
 
 export default UseCasesMock;

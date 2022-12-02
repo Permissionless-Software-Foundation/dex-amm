@@ -29,8 +29,12 @@ class TimerControllers {
 
   // Start all the time-based controllers.
   startTimers () {
-    setInterval(this.checkOrders, 60000 * 5)
+    this.checkOrderHandle = setInterval(this.checkOrders, 60000 * 5)
     // setTimeout(this.checkOrders, 60000 * 0.5)
+  }
+
+  stopTimers () {
+    clearInterval(this.checkOrderHandle)
   }
 
   async checkOrders () {
@@ -38,10 +42,13 @@ class TimerControllers {
       console.log('checkOrders() timer controller fired')
       // console.log('this.useCases: ', this.useCases)
 
-      await this.useCases.order.checkOrders()
+      const hash = await this.useCases.order.checkOrders()
+
+      return hash
     } catch (err) {
       // Do not throw an error. This is a top-level function.
       console.log('Error in timer-controllers.js/gcOrders(): ', err)
+      return false
     }
   }
 }
