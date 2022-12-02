@@ -29,7 +29,8 @@ class TimerControllers {
 
   // Start all the time-based controllers.
   startTimers () {
-    setInterval(this.checkOrders, 60000 * 0.5)
+    setInterval(this.checkOrders, 60000 * 5)
+    // setTimeout(this.checkOrders, 60000 * 0.5)
   }
 
   async checkOrders () {

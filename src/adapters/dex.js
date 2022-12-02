@@ -21,6 +21,28 @@ class DexAdapter {
       throw err
     }
   }
+
+  async createOrder (orderObj) {
+    try {
+      const result = await axios.post('http://localhost:5700/order/', { order: orderObj })
+
+      return result.data
+    } catch (err) {
+      console.error('Error in adapters/dex.js/createOrder()')
+      throw err
+    }
+  }
+
+  async deleteOrder (p2wdbHash) {
+    try {
+      const result = await axios.post('http://localhost:5700/order/delete', { p2wdbHash })
+
+      return result.data
+    } catch (err) {
+      console.error('Error in adapters/dex.js/createOrder()')
+      throw err
+    }
+  }
 }
 
 export default DexAdapter
