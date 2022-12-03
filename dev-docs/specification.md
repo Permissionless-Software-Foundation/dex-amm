@@ -10,23 +10,19 @@ This document contains a high-level, human-readable specification for the four m
 This reflects the [Clean Architecture](https://bafybeiajggd4zju7oen627bcy5l32hrxqomoqzvwqfir6phzgducozksv4.ipfs.dweb.link/blog/clean-architecture) design pattern.
 
 ## Entities
+No entities are coded for this application.
 
 ## Use Cases
 Use cases are the business logic that is applied by leverage Adapters. Most Use Cases are triggered by Controllers.
 
-### Create Order
-This use cases interfaces with the DEX REST API to create new orders. It is triggered by the Order Check Controller to generate a new Order on the DEX.
-
-### Delete Order
-This use case interafaces with the DEX REST API to delete an existing order. This is triggered by the Order Check Controller when the price of the underlying asset (BCH or eCash) has changed in price enough that the desired price of the token Order has drifted outside the desired price range.
+### Order
+The Order Use Case library is concerned with monitoring and working with Orders.
 
 ## Controllers
 Controllers are the inputs to the system. These are an API that causes the app to react when the controller is activated.
 
 ### Timer Controllers
-
-#### Order Check
-This timer controller fires every five minutes. It uses the DEX REST API to query the orders being monitored by the DEX. It compares the existing orders against a JSON file containing the desired orders to be maintained. If there is a mismatch between the two, the orders in the DEX will be adjusted to match the desires in the JSON file.
+The Time Controller library contains a single `checkOrders()` command that is triggered every 5 minutes. This compares existing Orders to the JSON file of ideal orders. It will add and delete orders in order to maintain the ideal Orders within the specified price range.
 
 ## Adapters
 Adapters are outputs of the system, and also middleware for interfacing to external systems.
@@ -34,5 +30,5 @@ Adapters are outputs of the system, and also middleware for interfacing to exter
 ### JSON File Handling
 This adapter is able to read in a JSON file containing desired orders to maintain with the DEX.
 
-### Price Feed
-This is a class of adapters. Any orders involving tokens that are maintained by the AMM, need to have a price feed that ultimately resolves into USD. The USD output of this adapters is used by the system to decide if an order needs to be re-created.
+### DEX
+This library is called by the Order Use Case library. They contain code for making REST API calls to the DEX, in order to work with Orders.
