@@ -22,7 +22,7 @@ const ipfsCoordName = process.env.COORD_NAME
 
 export default {
   // Configure TCP port.
-  port: process.env.PORT || 5020,
+  port: process.env.PORT || 5025,
 
   // Password for HTML UI that displays logs.
   logPass: 'test',
@@ -88,11 +88,13 @@ export default {
   debugLevel: process.env.DEBUG_LEVEL ? parseInt(process.env.DEBUG_LEVEL) : 2,
 
   // Settings for production, using external go-ipfs node.
-  isProduction: process.env.SVC_ENV === 'production' ? true : false,
+  isProduction: process.env.AMM_ENV === 'production' ? true : false,
   ipfsHost: process.env.IPFS_HOST ? process.env.IPFS_HOST : 'localhost',
   ipfsApiPort: process.env.IPFS_API_PORT
     ? parseInt(process.env.IPFS_API_PORT)
     : 5001,
 
-  chatPubSubChan: 'psf-ipfs-chat-001'
+  chatPubSubChan: 'psf-ipfs-chat-001',
+
+  dexUrl: process.env.DEX_URL ? process.env.DEX_URL : 'http://localhost:5700'
 }

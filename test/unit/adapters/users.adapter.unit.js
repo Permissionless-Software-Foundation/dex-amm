@@ -11,7 +11,7 @@ import User from '../../../src/adapters/localdb/models/users.js'
 import config from '../../../config/index.js'
 
 // Set the environment variable to signal this is a test.
-process.env.SVC_ENV = 'test'
+process.env.AMM_ENV = 'test'
 
 describe('#User-Adapter', () => {
   // let uut
