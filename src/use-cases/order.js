@@ -89,7 +89,7 @@ class OrderUseCases {
 
             break
           }
-          // console.log('Existing Order within price tolerance.')
+          console.log('Existing Order within price tolerance.')
         } else {
           console.log('Creating a new Order.')
 
