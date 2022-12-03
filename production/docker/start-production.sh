@@ -35,4 +35,7 @@ export AMM_ENV=production
 #export IPFS_TCP_PORT=4001
 #export IPFS_WS_PORT=4003
 
+# Set the DEX URL
+export DEX_URL=http://172.17.0.1:5700
+
 npm start
