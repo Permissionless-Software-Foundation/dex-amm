@@ -17,7 +17,7 @@ import adapters from '../../mocks/adapters/index.js'
 import UseCasesMock from '../../mocks/use-cases/index.js'
 
 // Set the environment variable to signal this is a test.
-process.env.SVC_ENV = 'test'
+process.env.AMM_ENV = 'test'
 
 describe('#AuthRPC', () => {
   let uut

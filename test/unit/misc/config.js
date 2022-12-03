@@ -9,12 +9,12 @@ let currentEnv
 describe('#config', () => {
   before(() => {
     // Backup the current environment setting.
-    currentEnv = process.env.SVC_ENV
+    currentEnv = process.env.AMM_ENV
   })
 
   after(() => {
     // Restore the environment setting before starting these tests.
-    process.env.SVC_ENV = currentEnv
+    process.env.AMM_ENV = currentEnv
   })
 
   // it('Should return development environment config by default', async () => {
@@ -29,7 +29,7 @@ describe('#config', () => {
     // Hack to dynamically import a library multiple times:
     // https://github.com/denoland/deno/issues/6946
 
-    process.env.SVC_ENV = 'test'
+    process.env.AMM_ENV = 'test'
 
     const importedConfig2 = await import('../../../config/index.js?foo=bar1')
     const config = importedConfig2.default
@@ -39,7 +39,7 @@ describe('#config', () => {
   })
 
   it('Should return test environment config', async () => {
-    process.env.SVC_ENV = 'prod'
+    process.env.AMM_ENV = 'prod'
 
     const importedConfig3 = await import('../../../config/index.js?foo=bar2')
     const config = importedConfig3.default

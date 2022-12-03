@@ -13,7 +13,7 @@ import { assert } from 'chai'
 import RateLimit from '../../../../src/controllers/json-rpc/rate-limit.js'
 
 // Set the environment variable to signal this is a test.
-process.env.SVC_ENV = 'test'
+process.env.AMM_ENV = 'test'
 
 describe('#rate-limit', () => {
   let uut
