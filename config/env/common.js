@@ -94,5 +94,7 @@ export default {
     ? parseInt(process.env.IPFS_API_PORT)
     : 5001,
 
-  chatPubSubChan: 'psf-ipfs-chat-001'
+  chatPubSubChan: 'psf-ipfs-chat-001',
+
+  dexUrl: process.env.DEX_URL ? process.env.DEX_URL : 'http://localhost:5700'
 }
