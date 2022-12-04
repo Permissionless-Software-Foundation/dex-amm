@@ -60,7 +60,14 @@ class OrderUseCases {
           }
         }
 
-        const idealSatPrice = this.convertUsdToSats(usdPerBch, thisIdealOrder)
+        let idealSatPrice = 1000000
+        if (!thisIdealOrder.priceAlgo) {
+          // Token uses a hard-coded value, and does not use a price algorithm.
+          idealSatPrice = this.convertUsdToSats(usdPerBch, thisIdealOrder)
+        } else {
+          // Token is priced using an algorithm and not a hard-coded value.
+          idealSatPrice = await this.getAlgoSatPrice(usdPerBch, thisIdealOrder)
+        }
 
         // Measure the tolerance thresholds.
         const highThresh = idealSatPrice * (1 + thisIdealOrder.errorPercent)
@@ -126,6 +133,49 @@ class OrderUseCases {
       return idealSatPrice
     } catch (err) {
       console.error('Error in convertUsdToSats()')
+      throw err
+    }
+  }
+
+  // If the token indicates that the price comes from an algorithm, this function
+  // will be called. The code inside this function should be customized to
+  // fit your own token.
+  async getAlgoSatPrice (usdPerBch, idealOrder) {
+    try {
+      console.log('usdPerBch: ', usdPerBch)
+      console.log('idealOrder: ', idealOrder)
+
+      const psfPrice = await this.adapters.dex.getPsfPrice()
+      console.log('psfPrice: ', psfPrice)
+      const psfPricePerToken = psfPrice.usdPerToken
+
+      const bchjs = this.wallet.bchjs
+
+      if (idealOrder.tokenId === '38e97c5d7d3585a2cbf3f9580c82ca33985f9cb0845d4dcce220cb709f9538b0') {
+        // Token is a PSF token. Retrieve the token price from the PSF website
+
+        // Calculate the ideal price per token in sats.
+        const idealBchPrice = bchjs.Util.floor8(idealOrder.qty * psfPricePerToken / usdPerBch)
+        console.log('PSF token idealBchPrice: ', idealBchPrice)
+
+        const idealSatPrice = bchjs.BitcoinCash.toSatoshi(idealBchPrice)
+        console.log('PSF token idealSatPrice: ', idealSatPrice)
+
+        return idealSatPrice
+      } else {
+        // Token is a governance NFT, which should be priced at 1,000 PSF tokens.
+
+        // Calculate the ideal price per token in sats.
+        const idealBchPrice = bchjs.Util.floor8(1000 * psfPricePerToken / usdPerBch)
+        console.log('PSF Governance token idealBchPrice: ', idealBchPrice)
+
+        const idealSatPrice = bchjs.BitcoinCash.toSatoshi(idealBchPrice)
+        console.log('PSF Governance token idealSatPrice: ', idealSatPrice)
+
+        return idealSatPrice
+      }
+    } catch (err) {
+      console.error('Error in getAlgoSatPrice()')
       throw err
     }
   }

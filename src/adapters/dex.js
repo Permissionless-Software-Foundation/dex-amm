@@ -47,6 +47,17 @@ class DexAdapter {
       throw err
     }
   }
+
+  async getPsfPrice () {
+    try {
+      const result = await axios.get('https://psfoundation.cash/price')
+
+      return result.data
+    } catch (err) {
+      console.error('Error in adapters/dex.js/getPsfPrice()')
+      throw err
+    }
+  }
 }
 
 export default DexAdapter
