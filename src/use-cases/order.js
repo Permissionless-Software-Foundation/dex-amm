@@ -124,7 +124,7 @@ class OrderUseCases {
       const bchjs = this.wallet.bchjs
 
       // Calculate the ideal price per token in sats.
-      const idealBchPrice = bchjs.Util.floor8(idealOrder.qty * idealOrder.pricePerToken / usdPerBch)
+      const idealBchPrice = bchjs.Util.floor8(idealOrder.pricePerToken / usdPerBch)
       console.log('idealBchPrice: ', idealBchPrice)
 
       const idealSatPrice = bchjs.BitcoinCash.toSatoshi(idealBchPrice)
