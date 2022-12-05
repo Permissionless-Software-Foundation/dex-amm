@@ -155,7 +155,7 @@ class OrderUseCases {
         // Token is a PSF token. Retrieve the token price from the PSF website
 
         // Calculate the ideal price per token in sats.
-        const idealBchPrice = bchjs.Util.floor8(idealOrder.qty * psfPricePerToken / usdPerBch)
+        const idealBchPrice = bchjs.Util.floor8(psfPricePerToken / usdPerBch)
         console.log('PSF token idealBchPrice: ', idealBchPrice)
 
         const idealSatPrice = bchjs.BitcoinCash.toSatoshi(idealBchPrice)
