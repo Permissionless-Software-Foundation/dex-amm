@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node index.js",
     "test": "npm run test:all",
-    "test:all": "export AMM_ENV=test && c8 --reporter=text mocha --exit --timeout 15000 --recursive test/unit test/e2e/automated/",
+    "test:all": "export AMM_ENV=test && c8 --reporter=text mocha --exit --timeout 15000 --recursive test/unit",
     "test:unit": "export AMM_ENV=test && mocha --exit --timeout 15000 --recursive test/unit/",
     "test:e2e:auto": "export AMM_ENV=test && mocha --exit --timeout 15000 test/e2e/automated/",
     "test:temp": "export AMM_ENV=test && mocha --exit --timeout 15000 -g '#rate-limit' test/unit/json-rpc/",
