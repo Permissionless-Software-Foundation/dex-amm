@@ -69,7 +69,7 @@ class OrderUseCases {
         // const lowThresh = idealSatPricePerToken
 
         if (matchFound) {
-          const existingPriceInSats = parseInt(matchFound.minUnitsToExchange)
+          const existingPriceInSats = parseInt(matchFound.rateInBaseUnit)
           console.log('existingPriceInSats: ', existingPriceInSats)
 
           // If the price is not within tolerance
@@ -117,7 +117,7 @@ class OrderUseCases {
       const bchjs = this.wallet.bchjs
 
       // Calculate the ideal price per token in sats.
-      const idealBchPrice = bchjs.Util.floor8(idealOrder.qty * idealOrder.pricePerToken / usdPerBch)
+      const idealBchPrice = bchjs.Util.floor8(idealOrder.pricePerToken / usdPerBch)
       console.log('idealBchPrice: ', idealBchPrice)
 
       const idealSatPrice = bchjs.BitcoinCash.toSatoshi(idealBchPrice)
@@ -142,7 +142,7 @@ class OrderUseCases {
         tokenId: orderDetails.tokenId,
         buyOrSell: 'sell',
         rateInBaseUnit: orderDetails.idealSatPrice,
-        minUnitsToExchange: orderDetails.idealSatPrice,
+        minUnitsToExchange: Math.floor(orderDetails.idealSatPrice * orderDetails.qty),
         numTokens: orderDetails.qty
       }
 
