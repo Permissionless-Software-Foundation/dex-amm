@@ -3,19 +3,9 @@
 version: '3.9'
 
 services:
-  mongo-dex-amm:
-    image: mongo:4.2.0
-    container_name: mongo-dex-amm
-    ports:
-      - '5455:27017' # <host port>:<container port>
-    volumes:
-      - ../data/database:/data/db
-    command: mongod --logpath=/dev/null # -- quiet
-    restart: always
-
   dex-amm:
-    build: .
-    #image: christroutner/dex-amm:v1.0.0
+    #build: .
+    image: christroutner/dex-amm:v1.0.0
     container_name: dex-amm
     logging:
       driver: 'json-file'
@@ -23,11 +13,11 @@ services:
         max-size: '10m'
         max-file: '10'
     mem_limit: 500mb
-    links:
-      - mongo-dex-amm
+    #links:
+    #  - mongo-dex-amm
     ports:
       - '5025:5025' # <host port>:<container port>
     volumes:
       - ./start-production.sh:/home/safeuser/dex-amm/start-production.sh
-      - ./orders.json:/home/safeuser/dex-amm/orders.json
+      - ../../orders.json:/home/safeuser/dex-amm/orders.json
     restart: always
