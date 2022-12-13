@@ -1,0 +1,26 @@
+[
+  {
+    "tokenId": "a4fb5c2da1aa064e25018a43f9165040071d9e984ba190c222a7f59053af84b2",
+    "qty": 0.1,
+    "pricePerToken": 0.01,
+    "errorPercent": 0.05,
+    "markup": 0.00,
+    "priceAlgo": false
+  },
+  {
+    "tokenId": "a4fb5c2da1aa064e25018a43f9165040071d9e984ba190c222a7f59053af84b2",
+    "qty": 1,
+    "pricePerToken": 0.01,
+    "errorPercent": 0.05,
+    "markup": 0.00,
+    "priceAlgo": false
+  },
+  {
+    "tokenId": "a4fb5c2da1aa064e25018a43f9165040071d9e984ba190c222a7f59053af84b2",
+    "qty": 2,
+    "pricePerToken": 0.01,
+    "errorPercent": 0.05,
+    "markup": 0.00,
+    "priceAlgo": false
+  }
+]

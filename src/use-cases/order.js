@@ -76,7 +76,7 @@ class OrderUseCases {
         // const lowThresh = idealSatPricePerToken
 
         if (matchFound) {
-          const existingPriceInSats = parseInt(matchFound.minUnitsToExchange)
+          const existingPriceInSats = parseInt(matchFound.rateInBaseUnit)
           console.log('existingPriceInSats: ', existingPriceInSats)
 
           // If the price is not within tolerance
@@ -192,7 +192,7 @@ class OrderUseCases {
         tokenId: orderDetails.tokenId,
         buyOrSell: 'sell',
         rateInBaseUnit: orderDetails.idealSatPrice,
-        minUnitsToExchange: orderDetails.idealSatPrice,
+        minUnitsToExchange: Math.floor(orderDetails.idealSatPrice * orderDetails.qty),
         numTokens: orderDetails.qty
       }
 
