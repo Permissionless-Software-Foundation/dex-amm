@@ -151,7 +151,7 @@ class OrderUseCases {
 
       return result.hash
     } catch (err) {
-      console.error('Error in use-cases/order/createOrder()')
+      console.error('Error in use-cases/order/createOrder(): ', err)
       throw err
     }
   }
